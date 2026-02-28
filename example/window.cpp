@@ -23,10 +23,9 @@ protected:
 
     bool onRender() override
     {
+        beginUseBuffer(BATCHED_BUFFER);
         angle++;
         const float x = 200, y = 200, w = 100, h = 100;
-        // auto transform = glm::translate(glm::mat4(1.0f), glm::vec3(x + w, y + h/2, 0));
-        // transform = glm::rotate(transform, glm::radians(angle), glm::vec3(0, 0, 1.0f));
         save(nullptr);
         setTranslation(x + w*0.5f, y + h*0.5f);
         setRotation(angle * 3.14159f / 180.0f);
@@ -44,7 +43,20 @@ protected:
         renderLine(20.0f, 20.0f, 200.0f, 100.0f);
 
         setRenderColor(0.65f, 0.82f, 0.34f);
-        renderFillArc(100.0f, 100.0f, 25.0f);
+        renderFillArc(100.0f, 100.0f, 25.0f);   
+
+        std::vector<VertexData> triangle;
+        triangle.push_back({ {0, -50}, { 0.234f, 0.632f, 0.123f, 1.0f } });
+        triangle.push_back({ {50, 50}, { 0.534f, 0.232f, 0.123f, 1.0f } });
+        triangle.push_back({ {-50, 50} });
+
+        setRenderColor(1.0f, 0.0f, 0.0f);
+        renderFillPolygon(150, 150, triangle);
+
+        setRenderLineWidth(3.0f);
+        setRenderColor(0.5f, 0.2f, 0.45f);
+        renderStrokePolygon(150, 150, triangle);
+        endUseBuffer();
 
         return true;
     }
